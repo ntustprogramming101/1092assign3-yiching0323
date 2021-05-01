@@ -6,6 +6,7 @@ final int START_BUTTON_W = 144;
 final int START_BUTTON_H = 60;
 final int START_BUTTON_X = 248;
 final int START_BUTTON_Y = 360;
+final int PLAYERHEALTH_MAX = 5;
 
 PImage title, gameover, startNormal, startHovered, restartNormal, restartHovered;
 PImage bg, groundhogIdle, groundhogDown, groundhogLeft, groundhogRight;
@@ -35,15 +36,13 @@ int cabbageX;
 float cabbageY;
 float initCabbageY;
 
-int HP = 2;
-
 boolean downPressed  = false;
 boolean leftPressed  = false;
 boolean rightPressed  = false;
 
 
 // For debug function; DO NOT edit or remove this!
-int playerHealth = 0;
+int playerHealth = 2;
 float cameraOffsetY = 0;
 boolean debugMode = false;
 
@@ -259,11 +258,13 @@ void draw() {
 
 
     // Health UI
-    for (int x = 0; x < HP; x ++) {
-      pushMatrix();
-      translate(x*70, 0);
-      image(life, 10, 10);
-      popMatrix();
+    if (playerHealth <= PLAYERHEALTH_MAX && playerHealth > 0) {
+      for (int x = 0; x < playerHealth; x++) {
+        pushMatrix();
+        translate(x*70, 0);
+        image(life, 10, 10);
+        popMatrix();
+      }
     }
 
     //soldierMove
@@ -278,7 +279,7 @@ void draw() {
     if (groundhogX < soldierX + 80 && groundhogX + 80 > soldierX && groundhogY < soldierY + 80 && groundhogY + 80 > soldierY) {
       groundhogX = 320;
       groundhogY = 80;
-      HP -= 1;
+      playerHealth -= 1;
       down = 0;
       left = 0;
       right = 0;
@@ -292,11 +293,11 @@ void draw() {
     if (groundhogX < cabbageX + 80 && groundhogX + 80 > cabbageX && groundhogY < cabbageY + 80 && groundhogY + 80 > cabbageY) {
       cabbageX = -80;
       cabbageY = 0;
-      HP +=1 ;
+      playerHealth +=1 ;
     }
 
     //gameOver
-    if (HP==0) {
+    if (playerHealth==0) {
       gameState=GAME_OVER;
     }
 
@@ -324,7 +325,7 @@ void draw() {
         down = 0;
         left = 0;
         right = 0;
-        HP=2;
+        playerHealth=2;
       }
     } else {
 
